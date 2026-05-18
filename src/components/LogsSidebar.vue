@@ -36,8 +36,9 @@
                         Uses 'select-text' so specific error logs can be copied if needed.
                     -->
                     <span class="leading-tight tracking-tighter select-text" :class="{
-                        'text-red-400': log.type === 'SYS',
-                        'text-emerald-400': log.type === 'UI'
+                        'text-cyan-400': log.type === 'SYS',
+                        'text-red-400': log.type === 'ERROR',
+                        'text-emerald-300': log.type === 'SUCCESS'
                     }">
                         {{ log.msg }}
                     </span>
