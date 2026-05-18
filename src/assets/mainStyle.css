@@ -1,0 +1,48 @@
+@layer base {
+    body {
+        /* Base background color: Deep midnight slate */
+        background-color: #020617;
+
+        /**
+         * SCANLINE EFFECT:
+         * Creates the visual texture of an old-school cathode ray tube (CRT) monitor.
+         * 1. The first gradient creates horizontal scanlines (alternating transparent/dark).
+         * 2. The second gradient introduces subtle RGB sub-pixel chromatic aberration.
+         */
+        background-image: linear-gradient(rgba(18, 16, 16, 0) 50%,
+                rgba(0, 0, 0, 0.15) 50%),
+            linear-gradient(90deg,
+                rgba(255, 0, 0, 0.03),
+                rgba(0, 255, 0, 0.01),
+                rgba(0, 0, 255, 0.03));
+        
+        /* Sets the density: 3px tall horizontal lines and 2px wide vertical sub-pixels */
+        background-size: 100% 3px, 2px 100%;
+    }
+
+    /* Standard Neon Glow: Enhances text readability against dark backgrounds */
+    .glow {
+        text-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+    }
+
+    /* Outer Component Glow: Adds depth to panels and containers */
+    .border-glow {
+        box-shadow: 0 0 15px rgba(6, 78, 59, 0.4);
+    }
+
+    /**
+     * LOGS TAB STYLING:
+     * Uses a polygon mask to create a slanted, "ruggedized" look for the sidebar toggle.
+     */
+    .btn-side-trigger {
+        /* Clips the button into a trapezoid-like shape */
+        clip-path: polygon(0 0, 100% 5%, 100% 95%, 0 100%);
+        transition: all 0.3s ease;
+    }
+
+    /* Interactive feedback for the UI sidebar toggle */
+    .btn-side-trigger:hover {
+        background: rgba(16, 185, 129, 0.1);
+        padding-right: 12px; /* Subtle "pop-out" movement on hover */
+    }
+}
