@@ -4,7 +4,7 @@
         <!-- Primary Viewport -->
         <main class="w-full h-full p-6 overflow-y-auto select-none">
             <!-- System Status Indicator -->
-            <StatusHeader :active="true" />
+            <StatusHeader v-model:FPGAactive="systemStatus" />
 
             <!-- Layout Grid: 7/12 for Radar, 5/12 for auxiliary data -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-8">
@@ -61,6 +61,7 @@ const bearing = ref(45.0); // Calculated angle of the target
 const confidence = ref(92); // Reliability percentage of the current signal
 const gainLevel = ref(45); // Current amplification level
 const spectrumBars = ref([10, 40, 80, 20, 50, 30, 90, 40]); // Visual frequencies
+const systemStatus = ref(true) // Represents FPGA connectivity, linked to StatusHeader
 
 /**
  * UI Refresh Loop:
@@ -150,8 +151,7 @@ setInterval(() => {
 // --- Sidebar & Logging Logic ---
 const isSidebarOpen = ref(false);
 const logs = ref([
-    { time: "00:01:15", type: "SYS", msg: "BACKDROP LAYER INITIALIZED" },
-    { time: "00:01:18", type: "UI", msg: "SCRIM CLICK-TO-CLOSE ACTIVE" },
+    // { time: "00:01:15", type: "SYS", msg: "BACKDROP LAYER INITIALIZED" },
 ]);
 
 /**
@@ -178,6 +178,15 @@ const addLog = (message, type = "SYS") => {
         logs.value.pop();
     }
 };
+window.addLog = addLog; // Expose globally for StatusHeader to call
+
+// eslint-disable-next-line no-unused-vars
+function toggleFPGAStatus() {
+    systemStatus.value = !systemStatus.value;
+}
+window.toggleFPGAStatus = toggleFPGAStatus;
+
+addLog("ODIN SYSTEM BOOT SEQUENCE INITIATED", "SYS");
 </script>
 
 <style>
