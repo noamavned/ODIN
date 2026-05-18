@@ -23,11 +23,16 @@
                     Switches color based on the 'active' prop and uses an 
                     animate-pulse to signify a "living" connection.
                 -->
-                <span :class="active ? 'bg-emerald-500' : 'bg-red-500'"
+                <span id="fpga-status-led"
+                    :class="props.FPGAactive ? 'bg-emerald-500' : 'bg-red-500'"
                     class="w-2 h-2 rounded-full animate-pulse"></span>
                 
-                <span class="text-sm font-bold uppercase">
-                    {{ active ? 'FPGA Link Active' : 'Offline' }}
+                <span id="fpga-status-text"
+                    class="text-sm font-bold uppercase"
+                    :class="props.FPGAactive ? 'text-emerald-400' : 'text-red-400'">
+                    {{
+                        props.FPGAactive ? 'FPGA Link Active' : 'FPGA Link Offline'
+                    }}
                 </span>
             </div>
         </div>
@@ -35,12 +40,42 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, watch } from 'vue'
 
 /**
  * Component Props
- * @property {Boolean} active - Represents the connectivity state with the FPGA controller.
+ * @property {Boolean} FPGAactive - Represents the connectivity state with the FPGA controller.
  *                              Determines the LED color and status text.
  */
-defineProps(['active'])
+// eslint-disable-next-line no-unused-vars
+var props = defineProps({
+    FPGAactive: {
+        type: Boolean,
+        default: false
+    }
+})
+
+
+// eslint-disable-next-line no-unused-vars
+setInterval(() => {
+    // update header status every 5 seconds
+    const ledObj = document.getElementById('fpga-status-led')
+    const txtObj = document.getElementById('fpga-status-text')
+    if (props.FPGAactive !== false) {
+        ledObj.classList.replace('bg-red-500', 'bg-emerald-500')
+        txtObj.classList.replace('text-red-400', 'text-emerald-400')
+    } else {
+        ledObj.classList.replace('bg-emerald-500', 'bg-red-500')
+        txtObj.classList.replace('text-emerald-400', 'text-red-400')
+    }
+}, 1000)
+
+watch(() => props.FPGAactive, () => {
+    if (window.addLog) {
+        window.addLog(
+            props.FPGAactive ? "FPGA LINK ACTIVE" : "FPGA LINK OFFLINE",
+            props.FPGAactive ? "SUCCESS" : "ERROR"
+        )
+    }
+})
 </script>
