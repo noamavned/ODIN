@@ -127,33 +127,6 @@ ODIN functions as the central command interface for a distributed embedded pipel
 
 ---
 
-# Repository Structure
-
-```text
-project-odin/
-├── frontend/
-├── firmware/
-├── fpga/
-├── docs/
-└── README.md
-```
-
----
-
-# Frontend Setup
-
-```bash
-git clone https://github.com/noamavned/project-odin.git
-
-cd project-odin/frontend
-
-npm install
-
-npm run dev
-```
-
----
-
 # Engineering Notes
 
 PROJECT ODIN is part of a final engineering certification project focused on FPGA-based DSP acceleration, embedded telemetry systems, and real-time visualization architecture.
@@ -164,10 +137,10 @@ The current public release uses simulated telemetry while the embedded hardware 
 
 # License
 
-MIT License
+[MIT License](https://mit-license.org/)
 
 ---
 
 # Author
 
-Prepared by **ReiRei**
+Prepared by [**ReiRei**](https://www.instagram.com/noam_avned/) and [Richard](https://github.com/titr9988-commits)
