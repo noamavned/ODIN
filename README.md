@@ -1,63 +1,44 @@
 # Project ODIN
 **Omnidirectional Digital Interference Nullifier**
 
-Project ODIN is a high-fidelity Signal Intelligence (SIGINT) dashboard and control interface. Designed for real-time spatial target acquisition and frequency domain analysis, it serves as the frontend for an integrated embedded system (FPGA/ESP32).
+Project ODIN is a high-fidelity Signal Intelligence (SIGINT) dashboard and tactical control interface. Designed for real-time spatial target acquisition and frequency domain analysis, it serves as the central control console for an integrated embedded hardware pipeline featuring an Intel MAX 10 FPGA and an ESP32-WROOM-32D (DevKitC v1) microcontroller.
+
+---
 
 ## 📡 System Overview
-ODIN provides a tactical visualization layer for raw signal data. It is engineered to handle high-speed telemetry with sub-1.2ms latency, offering operators a comprehensive view of the local electromagnetic spectrum and spatial signal origins.
+ODIN acts as a ruggedized visualization and configuration layer for real-time digital signal processing. The architecture decouples sub-millisecond hardware acceleration from high-refresh-rate frontend presentation, processing hardware telemetry with a total pipeline latency under 1.2ms.
 
 ### Core Features
-*   **Spatial Target Acquisition**: A 360° radar interface for tracking signal bearings with heuristic confidence scoring.
-*   **Frequency Domain Analysis**: Real-time Spectrum Analyzer visualizing signal magnitude across frequency bins.
-*   **Dynamic Gain Engine**: An Automatic Gain Control (AGC) interface with "Auto-Normalization" and "Direct-Pass" modes.
-*   **Signal Intelligence Metadata**: Real-time telemetry monitoring including sampling rates (48.0 kHz), hardware thermals, and link security (AES-256).
-*   **Tactical Event Logging**: A prioritized system log for hardware alerts (SYS) and interface events (UI).
+* **Spatial Target Acquisition**: A 360° azimuth radar sweep engine for tracking incoming signal bearings, backed by a dynamic heuristic confidence scoring system.
+* **Frequency Domain Analysis**: Real-time Spectrum Analyzer visualizing signal magnitude across frequency bins.
+* **Dynamic Gain Engine**: Remote interface for the hardware's Automatic Gain Control (AGC), supporting full "Auto-Normalization" loop processing and passive hardware "Direct-Pass (Bypass)" monitoring.
+* **Tactical Event Logging**: A prioritized system log for hardware alerts (SYS), signal locks (SIGNAL), and interface events.
 
 ---
 
-## 🛠 Tech Stack
-*   **Framework**: Vue.js 3 (Composition API)
-*   **Styling**: Tailwind CSS
-*   **Animations**: CSS3 Transitions & SVG Quadratic Bézier Curves
-*   **Hardware Integration**: Designed for FPGA/ESP32 Serial/WebSocket data streams
+## 🛠 Tech Stack & Hardware Architecture
 
----
+### Software Architecture
+* **Framework**: Vue.js 3 (Composition API)
+* **State Management**: Pinia (Centralized Global Telemetry Hub)
+* **Styling**: Tailwind CSS (Utility-first responsive design)
+* **Animation**: CSS3 Transitions & SVG Quadratic Bézier Curves
 
-## 🚀 Getting Started
-
-### Prerequisites
-*   Node.js (v16+)
-*   npm or yarn
-
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/project-odin.git
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
+### Embedded Hardware Stack
+* **Digital Signal Processing**: **Intel MAX 10 FPGA (10M08)**
+  * High-speed ADC sampling, FFT processing, and real-time signal filtering.
+* **Communication Layer**: **ESP32 NodeMCU DevKit v1**
+  * Bridges FPGA data lines to the web interface via high-speed WebSocket streams.
 
 ---
 
 ## 🏗 Architecture & Logic
 
-### Signal Confidence Heuristic
-The system calculates target reliability based on three primary vectors:
-1.  **Movement Delta**: Rapid changes in bearing reduce lock confidence.
-2.  **Gain Penalty**: Higher amplification levels suggest a lower Signal-to-Noise Ratio (SNR).
-3.  **Environmental Jitter**: Simulated electronic noise floor.
+### Centralized State (Pinia)
+The system utilizes a global Pinia store to decouple hardware telemetry from the UI. This ensures that high-frequency data updates (20Hz+) do not block the main thread and that state remains consistent across the Radar, Spectrum Analyzer, and Logs.
 
-### Visual Aesthetic (CRT Terminal)
-The UI utilizes a custom "Scanline" CSS layer and neon glow effects to simulate a ruggedized hardware terminal.
-*   **Global Scanlines**: Created via linear gradients to mimic cathode ray tube (CRT) monitors.
-*   **Tabular Numerals**: Ensuring UI stability during high-frequency data updates.
-*   **Tactical Geometry**: Components use `clip-path` polygons rather than standard border-radii for an industrial feel.
+### Virtual DOM Optimization
+To prevent "layout thrashing" during rapid logging, each log entry is assigned a unique, immutable ID. This allows Vue to perform atomic DOM updates rather than re-rendering the entire list when a new signal is acquired.
 
 ---
 
@@ -67,26 +48,18 @@ The UI utilizes a custom "Scanline" CSS layer and neon glow effects to simulate 
 | **Sampling Rate** | 48.0 kHz |
 | **System Latency** | < 1.2ms (FPGA Optimized) |
 | **Encryption** | AES-256 Bit Link |
-| **UI Refresh Rate** | 20 FPS (Logic) / 60 FPS (Transitions) |
+| **UI Refresh Rate** | 20 FPS (Logic) / 60 FPS (Visuals) |
 
 ---
 
 ## ⚖️ License
 This project is licensed under the **MIT License**.
 
-Copyright (c) 2026
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Copyright (c) 2026 ReiRei
 
 ---
 
-## 📝 Notes
-This project is a base for my final engineering project and involves fake data.
-
-I do not have the database set up and connected to the ESP32 yet, but once I have it set up, I will add it as another branch.
+## 📝 Engineering Notes
+This project is a base for my final engineering project. The current version uses simulated telemetry loops; the hardware branch (ESP32/FPGA integration) is currently in development.
 
 <3 ReiRei
