@@ -1,65 +1,173 @@
-# Project ODIN
-**Omnidirectional Digital Interference Nullifier**
+<div align="center">
 
-Project ODIN is a high-fidelity Signal Intelligence (SIGINT) dashboard and tactical control interface. Designed for real-time spatial target acquisition and frequency domain analysis, it serves as the central control console for an integrated embedded hardware pipeline featuring an Intel MAX 10 FPGA and an ESP32-WROOM-32D (DevKitC v1) microcontroller.
+# PROJECT ODIN
 
----
+### Omnidirectional Digital Interference Nullifier
 
-## 📡 System Overview
-ODIN acts as a ruggedized visualization and configuration layer for real-time digital signal processing. The architecture decouples sub-millisecond hardware acceleration from high-refresh-rate frontend presentation, processing hardware telemetry with a total pipeline latency under 1.2ms.
+<img src="https://img.shields.io/badge/Status-In%20Development-orange?style=for-the-badge" />
+<img src="https://img.shields.io/badge/FPGA-Intel%20MAX%2010-blue?style=for-the-badge" />
+<img src="https://img.shields.io/badge/MCU-ESP32-red?style=for-the-badge" />
+<img src="https://img.shields.io/badge/Frontend-Vue%203-42b883?style=for-the-badge" />
+<img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
 
-### Core Features
-* **Spatial Target Acquisition**: A 360° azimuth radar sweep engine for tracking incoming signal bearings, backed by a dynamic heuristic confidence scoring system.
-* **Frequency Domain Analysis**: Real-time Spectrum Analyzer visualizing signal magnitude across frequency bins.
-* **Dynamic Gain Engine**: Remote interface for the hardware's Automatic Gain Control (AGC), supporting full "Auto-Normalization" loop processing and passive hardware "Direct-Pass (Bypass)" monitoring.
-* **Tactical Event Logging**: A prioritized system log for hardware alerts (SYS), signal locks (SIGNAL), and interface events.
+### Real-Time DSP Visualization & Tactical Signal Interface
 
----
+> FPGA accelerated • Ultra-low latency • Real-time telemetry • Tactical visualization
 
-## 🛠 Tech Stack & Hardware Architecture
-
-### Software Architecture
-* **Framework**: Vue.js 3 (Composition API)
-* **State Management**: Pinia (Centralized Global Telemetry Hub)
-* **Styling**: Tailwind CSS (Utility-first responsive design)
-* **Animation**: CSS3 Transitions & SVG Quadratic Bézier Curves
-
-### Embedded Hardware Stack
-* **Digital Signal Processing**: **Intel MAX 10 FPGA (10M08)**
-  * High-speed ADC sampling, FFT processing, and real-time signal filtering.
-* **Communication Layer**: **ESP32 NodeMCU DevKit v1**
-  * Bridges FPGA data lines to the web interface via high-speed WebSocket streams.
+</div>
 
 ---
 
-## 🏗 Architecture & Logic
+# Overview
 
-### Centralized State (Pinia)
-The system utilizes a global Pinia store to decouple hardware telemetry from the UI. This ensures that high-frequency data updates (20Hz+) do not block the main thread and that state remains consistent across the Radar, Spectrum Analyzer, and Logs.
+PROJECT ODIN is a high-performance signal intelligence dashboard designed for real-time digital signal processing, telemetry visualization, and embedded systems experimentation.
 
-### Virtual DOM Optimization
-To prevent "layout thrashing" during rapid logging, each log entry is assigned a unique, immutable ID. This allows Vue to perform atomic DOM updates rather than re-rendering the entire list when a new signal is acquired.
+The platform combines:
+
+- **Intel MAX 10 FPGA acceleration** for deterministic DSP workloads
+- **ESP32 telemetry and command routing** for wireless communication
+- **Vue.js frontend rendering** for responsive tactical visualization
+
+ODIN functions as the central command interface for a distributed embedded pipeline capable of acquiring, analyzing, and visualizing incoming signal activity with ultra-low latency.
 
 ---
 
-## 📈 Technical Specifications
+# System Architecture
+
+```text
+┌───────────────────────────────────────────────────────┐
+│                   PROJECT ODIN                        │
+├───────────────────────────────────────────────────────┤
+│                                                       │
+│   Intel MAX 10 FPGA                                   │
+│   • ADC Sampling                                      │
+│   • FFT Processing                                    │
+│   • Signal Filtering                                  │
+│   • Gain Processing                                   │
+│                                                       │
+└───────────────┬───────────────────────────────────────┘
+                │
+                ▼
+┌───────────────────────────────────────────────────────┐
+│                 ESP32 DevKitC v1                      │
+│   • WebSocket Bridge                                  │
+│   • Serial Interface                                  │
+│   • Command Routing                                   │
+│   • Telemetry Packaging                               │
+└───────────────┬───────────────────────────────────────┘
+                │
+                ▼
+┌───────────────────────────────────────────────────────┐
+│                Vue.js Tactical UI                     │
+│   • Radar Visualization                               │
+│   • FFT Spectrum Analyzer                             │
+│   • AGC Controls                                      │
+│   • Event Logging                                     │
+└───────────────────────────────────────────────────────┘
+```
+
+---
+
+# Core Features
+
+| Feature | Description |
+|---|---|
+| Spatial Target Acquisition | 360° radar sweep engine with heuristic confidence scoring |
+| Frequency Domain Analysis | Real-time FFT spectrum analyzer |
+| Dynamic Gain Engine | Remote AGC configuration and adaptive modes |
+| Tactical Event Logging | Prioritized system and telemetry event tracking |
+
+---
+
+# Technical Specifications
+
 | Metric | Value |
-| :--- | :--- |
-| **Sampling Rate** | 48.0 kHz |
-| **System Latency** | < 1.2ms (FPGA Optimized) |
-| **Encryption** | AES-256 Bit Link |
-| **UI Refresh Rate** | 20 FPS (Logic) / 60 FPS (Visuals) |
+|---|---|
+| Sampling Rate | 48.0 kHz |
+| Processing Latency | < 1.2 ms |
+| FPGA Platform | Intel MAX 10 (10M08) |
+| MCU Platform | ESP32-WROOM-32D |
+| Communication | WebSocket / Serial |
+| UI Refresh Rate | 60 FPS |
+| Data Logic Refresh | 20 FPS |
 
 ---
 
-## ⚖️ License
-This project is licensed under the **MIT License**.
+# Software Stack
 
-Copyright (c) 2026 ReiRei
+| Technology | Purpose |
+|---|---|
+| Vue.js 3 | Frontend framework |
+| Pinia | State management |
+| Tailwind CSS | Styling system |
+| WebSocket | Telemetry transport |
 
 ---
 
-## 📝 Engineering Notes
-This project is a base for my final engineering project. The current version uses simulated telemetry loops; the hardware branch (ESP32/FPGA integration) is currently in development.
+# Development Status
 
-<3 ReiRei
+## Completed
+- Frontend architecture
+- Telemetry simulation engine
+- FFT visualization pipeline
+- Tactical radar UI
+- Event logging subsystem
+
+## In Progress
+- FPGA RTL implementation
+- ESP32 firmware integration
+- ADC hardware validation
+- Real telemetry synchronization
+
+## Planned
+- Multi-channel acquisition
+- Beamforming support
+- Signal classification heuristics
+- Embedded ML integration
+
+---
+
+# Repository Structure
+
+```text
+project-odin/
+├── frontend/
+├── firmware/
+├── fpga/
+├── docs/
+└── README.md
+```
+
+---
+
+# Frontend Setup
+
+```bash
+git clone https://github.com/noamavned/project-odin.git
+
+cd project-odin/frontend
+
+npm install
+
+npm run dev
+```
+
+---
+
+# Engineering Notes
+
+PROJECT ODIN is part of a final engineering certification project focused on FPGA-based DSP acceleration, embedded telemetry systems, and real-time visualization architecture.
+
+The current public release uses simulated telemetry while the embedded hardware layer remains under active development.
+
+---
+
+# License
+
+MIT License
+
+---
+
+# Author
+
+Prepared by **ReiRei**
